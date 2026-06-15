@@ -1,0 +1,16 @@
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Specs are synced from nb-api-specs (local dev) or fetched over HTTP (CI).
+# They are inputs to codegen, not source — do not commit.
+specs/
+
+# Generated typed clients. Produced by `npm run generate` from specs/.
+# Not committed today (contribution model "B"); see docs/sdk-design.md. Switching
+# to model "A" (external code contributions) is just un-ignoring this directory.
+src/generated/
+
+# Local env that may contain a PAT
+.env
+.env.local

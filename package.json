@@ -1,0 +1,47 @@
+{
+  "name": "@nasebanal/sdk",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for the NASEBANAL APIs — typed clients generated from the nb-api-specs OpenAPI contracts, with auth handled for you.",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "sync-specs": "node scripts/sync-specs.mjs",
+    "generate": "node scripts/generate.mjs",
+    "codegen": "npm run sync-specs && npm run generate",
+    "build": "npm run codegen && tsc -p tsconfig.json",
+    "typecheck": "npm run codegen && tsc -p tsconfig.json --noEmit",
+    "test": "npm run codegen && vitest run",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.0",
+    "vitest": "^4.1.8",
+    "yaml": "^2.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nasebanal/nb-sdk"
+  },
+  "keywords": [
+    "nasebanal",
+    "sdk",
+    "api-client",
+    "openapi",
+    "cdd"
+  ]
+}

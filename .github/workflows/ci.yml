@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    # Only run the secret-dependent install on same-repo PRs. Fork PRs get no
+    # secrets from GitHub by default, so this just skips a guaranteed-to-fail run
+    # rather than leaking anything. (Never switch this to pull_request_target.)
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
+
+      - name: Sync OpenAPI specs
+        # No monorepo / private packages in CI — fetch the public specs over HTTP.
+        run: npm run sync-specs
+
+      - name: Generate typed clients
+        run: npm run generate
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build
+        run: npx tsc -p tsconfig.json
+
+      - name: Verify codegen is deterministic
+        # Re-running the generator must produce byte-identical output. (src/generated
+        # is gitignored under contribution model B, so compare hashes, not git diff.)
+        run: |
+          before=$(find src/generated -type f | sort | xargs cat | sha256sum)
+          npm run generate
+          after=$(find src/generated -type f | sort | xargs cat | sha256sum)
+          if [ "$before" != "$after" ]; then
+            echo "::error::Generated clients are not deterministic — generate.mjs produced different output on a second run.";
+            exit 1;
+          fi
