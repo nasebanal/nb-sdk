@@ -1,4 +1,4 @@
-# nb-sdk
+# NASEBANAL SDK
 
 `@nasebanal/sdk` — a TypeScript SDK for the NASEBANAL APIs.
 
