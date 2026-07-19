@@ -127,7 +127,7 @@ npm run build       # codegen + tsc -> dist/ (with .d.ts)
 `nb-api-specs` checkout or network access to the public specs host
 (`NB_SPECS_BASE_URL`).
 
-## Conventions
+### Conventions
 
 - **The client surface is generated, not hand-written** — refine it by improving
   the contract in `nb-api-specs`, not by editing `src/generated/`.
@@ -136,3 +136,7 @@ npm run build       # codegen + tsc -> dist/ (with .d.ts)
   which keeps the door open to committing the generated clients later if external
   code contributions warrant it (model "A" in `docs/sdk-design.md`).
 - **No runtime dependencies** — the SDK is fetch-based and ships zero deps.
+
+## License
+
+MIT
