@@ -286,6 +286,28 @@ function generateApi(api) {
     }
   }
 
+  // A write on a singular segment is named after the segment (`me.acceptTerms`).
+  // When that segment is also a group the two collide, and `insert` silently
+  // overwrites the group with the method: account 1.2.0's `DELETE /api/v1/me`
+  // replaced the whole `me` namespace, so `nb.account.me.get` stopped existing.
+  // Give the colliding entry its verb back (`me.delete`), matching nb-cli's
+  // identical fix in src/spec/build.ts — the two mappings must stay in step.
+  const chains = [...byChain.keys()].map((k) => k.split(" "));
+  const isGroupElsewhere = (chain) =>
+    chains.some(
+      (other) => other.length > chain.length && chain.every((s, i) => other[i] === s),
+    );
+
+  for (const entry of [...byChain.values()]) {
+    if (!isGroupElsewhere(entry.chain)) continue;
+    const verb = entry.method === "get" ? "get" : PLURAL_VERB[entry.method];
+    const renamed = [...entry.chain, verb];
+    const key = renamed.join(" ");
+    if (byChain.has(key)) continue;
+    byChain.delete(entry.chain.join(" "));
+    byChain.set(key, { ...entry, chain: renamed });
+  }
+
   const tree = {};
   for (const { chain, path, method, op } of byChain.values()) {
     insert(tree, chain, buildMethod(op, path, method, spec));

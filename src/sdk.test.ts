@@ -73,4 +73,14 @@ describe("NasebanalClient", () => {
     // account spec declares http://localhost:8788 as the local server.
     expect(calls[0].url).toMatch(/^http:\/\/localhost:8788\//);
   });
+
+  // account 1.2.0 added `DELETE /api/v1/me` beside `GET /api/v1/me`. The
+  // singular-write rule named it `me`, which overwrote the whole `me`
+  // namespace in the generated client — `nb.account.me.get` vanished and every
+  // call through it failed. Both must survive.
+  it("keeps a namespace and a same-named write side by side", () => {
+    const nb = new NasebanalClient({ auth: { token: "t" } });
+    expect(typeof nb.account.me.get).toBe("function");
+    expect(typeof (nb.account.me as unknown as { delete: unknown }).delete).toBe("function");
+  });
 });
