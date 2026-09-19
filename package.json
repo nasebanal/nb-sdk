@@ -1,6 +1,6 @@
 {
   "name": "@nasebanal/sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "TypeScript SDK for the NASEBANAL APIs — typed clients generated from the nb-api-specs OpenAPI contracts, with auth handled for you.",
   "license": "MIT",
   "type": "module",
