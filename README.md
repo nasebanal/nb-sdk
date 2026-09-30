@@ -28,17 +28,23 @@ Stripe client libraries.
 
 ## Installation
 
-Node ≥ 20. `@nasebanal/sdk` is a scoped package on **GitHub Packages**, so point
-the registry at it once (`~/.npmrc`):
-
-```ini
-@nasebanal:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}   # a PAT with read:packages
-```
+Node ≥ 20. `@nasebanal/sdk` is published to the public npm registry — no
+`git clone`, no registry configuration, no token:
 
 ```bash
 npm install @nasebanal/sdk
 ```
+
+> **NASEBANAL developers:** if your `~/.npmrc` maps `@nasebanal:registry` to
+> GitHub Packages (needed for the private `@nasebanal/shared-navigation` /
+> `api-specs-*` packages), it captures this package too. Install with
+> `npm install @nasebanal/sdk --@nasebanal:registry=https://registry.npmjs.org/`.
+
+Versions follow SemVer (0.x until 1.0: breaking changes bump the minor). Each
+release bundles a fixed set of API contract versions, recorded in
+[`spec-versions.json`](spec-versions.json). A release is cut by pushing a
+`vX.Y.Z` tag that matches `package.json`; the `Release` workflow publishes it to
+npm with provenance.
 
 The published package bundles the generated clients, so no `nb-api-specs`
 checkout is needed to consume it.
