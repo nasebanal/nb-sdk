@@ -15,7 +15,7 @@ import { NasebanalClient } from "@nasebanal/sdk";
 const nb = new NasebanalClient({ auth: { token: process.env.NB_TOKEN } });
 
 const me = await nb.account.me.get();              // typed against the contract
-const records = await nb.recorder.records.list();
+const records = await nb.record.records.list();
 const token = await nb.account.me.tokens.create({ name: "ci" });
 ```
 

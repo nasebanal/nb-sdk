@@ -83,4 +83,9 @@ describe("NasebanalClient", () => {
     expect(typeof nb.account.me.get).toBe("function");
     expect(typeof (nb.account.me as unknown as { delete: unknown }).delete).toBe("function");
   });
+
+  it("exposes the same API groups as the nb CLI: account, record, target, assurance", () => {
+    const nb = new NasebanalClient({ auth: { token: "t" } });
+    expect(Object.keys(nb).sort()).toEqual(["account", "assurance", "record", "target"]);
+  });
 });
