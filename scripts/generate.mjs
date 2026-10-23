@@ -29,7 +29,7 @@ const APIS = [
   { name: "account", pascal: "Account", varName: "account" },
   { name: "recorder", pascal: "Recorder", varName: "recorder" },
   { name: "target", pascal: "Target", varName: "target" },
-  { name: "app-template", pascal: "AppTemplate", varName: "appTemplate" },
+  { name: "assurance", pascal: "Assurance", varName: "assurance" },
 ];
 
 const METHODS = ["get", "post", "put", "patch", "delete"];
