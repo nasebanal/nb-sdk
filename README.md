@@ -152,9 +152,11 @@ npm run typecheck
 npm run build       # codegen + tsc -> dist/ (with .d.ts)
 ```
 
-`npm run build` runs codegen first, so a fresh clone needs either a sibling
-`nb-api-specs` checkout or network access to the public specs host
-(`NB_SPECS_BASE_URL`).
+`npm run build` runs codegen first. A fresh clone needs nothing but network
+access: with no sibling `nb-api-specs` checkout, codegen fetches the contract
+versions pinned in `spec-versions.json` from the public specs host
+(`NB_SPECS_BASE_URL` overrides it). No registry token is needed. Contributing:
+see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ### Conventions
 
