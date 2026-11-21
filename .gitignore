@@ -14,3 +14,6 @@ src/generated/
 # Local env that may contain a PAT
 .env
 .env.local
+
+# AGENTS.md is not tracked: only Claude Code is used here and the rules live in CLAUDE.md (`next dev` also regenerates it).
+/AGENTS.md
