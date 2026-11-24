@@ -19,6 +19,27 @@ const records = await nb.record.records.list();
 const token = await nb.account.me.tokens.create({ name: "ci" });
 ```
 
+## Stability and compatibility
+
+From **1.0.0**, `@nasebanal/sdk` follows [SemVer](https://semver.org/): 1.0.0 is the first stable release (the SDK is out of beta), and what is listed below changes in a *major* release only.
+
+**What the promise covers** (the stable namespaces: `account`, `record`, `target`):
+
+- the exports of the package (`NasebanalClient`, its options, `SdkError`, the auth types) and their behaviour;
+- the names of the namespaces and methods, and their arguments (path parameters, body, `{ query }`);
+- the shape of what a method resolves to (the `{ data }` envelope is kept, not unwrapped), and the types inferred from it: a field is not removed or renamed, and its type does not change;
+- what `SdkError` carries (`status`, `data`) and when it is thrown.
+
+**What a release may do without a major version:** add an export, a method, an optional argument or a response field (minor); fix a bug (patch).
+
+**Generated from the API contracts.** The methods and their types come from the OpenAPI contracts a release bundles (`spec-versions.json`). A breaking change in a bundled contract that changes the methods or types of a stable namespace is released as a *major* version of the SDK.
+
+**Deprecation.** A method or option that is going away is first marked `@deprecated` (naming what to use instead) for at least one minor release.
+
+**Beta.** `nb.assurance` (NASEBANAL Evolution's beta) is marked `@beta` and is **not** covered: it may change in any release, a minor one included. When Evolution leaves beta, the marker goes and the namespace joins the promise (a minor release, announced in the release notes).
+
+**Before 1.0.0** (0.x), a breaking change bumps the minor version.
+
 ## Why an SDK
 
 Without it, a developer hand-rolls `fetch` calls and wires up Auth0 themselves.
@@ -40,7 +61,8 @@ npm install @nasebanal/sdk
 > `api-specs-*` packages), it captures this package too. Install with
 > `npm install @nasebanal/sdk --@nasebanal:registry=https://registry.npmjs.org/`.
 
-Versions follow SemVer (0.x until 1.0: breaking changes bump the minor). Each
+Versions follow SemVer; see [Stability and compatibility](#stability-and-compatibility)
+for what 1.0.0 and later promise (0.x: breaking changes bump the minor). Each
 release bundles a fixed set of API contract versions, recorded in
 [`spec-versions.json`](spec-versions.json).
 

@@ -36,6 +36,12 @@ export class NasebanalClient {
   readonly account: ReturnType<typeof createAccountApi>;
   readonly record: ReturnType<typeof createRecorderApi>;
   readonly target: ReturnType<typeof createTargetApi>;
+  /**
+   * Monitors and CI/CD test results (NASEBANAL Evolution).
+   *
+   * @beta Evolution is a beta: this namespace may change in any release, a minor one included, and the
+   * compatibility promise of the README ("Stability and compatibility") does not cover it yet.
+   */
   readonly assurance: ReturnType<typeof createAssuranceApi>;
 
   constructor(options: NasebanalClientOptions = {}) {
