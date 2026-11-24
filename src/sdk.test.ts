@@ -1,4 +1,6 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { NasebanalClient, SdkError } from "./index.js";
 
 /** Mock global fetch with a single canned JSON response, capturing the request. */
@@ -87,5 +89,21 @@ describe("NasebanalClient", () => {
   it("exposes the same API groups as the nb CLI: account, record, target, assurance", () => {
     const nb = new NasebanalClient({ auth: { token: "t" } });
     expect(Object.keys(nb).sort()).toEqual(["account", "assurance", "record", "target"]);
+  });
+});
+
+describe("beta namespaces (outside the compatibility promise)", () => {
+  const read = (rel: string) => readFileSync(fileURLToPath(new URL(rel, import.meta.url)), "utf8");
+
+  it("marks assurance @beta in the client and names it in the README's stability section, and no stable namespace", () => {
+    const client = read("./client.ts");
+    expect(client).toMatch(/@beta[\s\S]*readonly assurance:/);
+    for (const stable of ["account", "record", "target"]) {
+      expect(client, stable).not.toMatch(new RegExp(`@beta[^*]*\\*/\\s*readonly ${stable}:`));
+    }
+    const readme = read("../README.md");
+    const section = readme.slice(readme.indexOf("## Stability and compatibility"), readme.indexOf("## Why an SDK"));
+    expect(section).toContain("`nb.assurance`");
+    expect(section).toContain("@beta");
   });
 });
